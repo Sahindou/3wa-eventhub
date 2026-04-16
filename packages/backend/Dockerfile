@@ -2,8 +2,10 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm ci
+RUN npm install -g pnpm
+
+COPY package.json ./
+RUN pnpm install
 
 COPY prisma ./prisma
 RUN npx prisma generate
@@ -11,7 +13,7 @@ RUN npx prisma generate
 COPY tsconfig.json ./
 COPY src ./src
 
-RUN npm run build
+RUN pnpm run build
 
 EXPOSE 8000
 
