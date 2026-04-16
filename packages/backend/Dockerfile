@@ -10,7 +10,7 @@ COPY tsconfig.base.json ./
 WORKDIR /app/packages/backend
 
 COPY packages/backend/package.json ./
-RUN pnpm install
+RUN pnpm install --shamefully-hoist
 
 COPY packages/backend/prisma ./prisma
 RUN npx prisma generate

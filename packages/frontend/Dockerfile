@@ -4,16 +4,16 @@ WORKDIR /app
 
 RUN npm install -g pnpm
 
-COPY package.json ./
+COPY packages/frontend/package.json ./
 RUN pnpm install
 
-COPY . .
+COPY packages/frontend/ ./
 RUN pnpm run build
 
 FROM nginx:alpine
 
 COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY packages/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
