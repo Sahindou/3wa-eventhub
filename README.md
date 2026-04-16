@@ -1,5 +1,7 @@
 # EventHub
 
+---
+
 Application de gestion d'événements — monorepo pnpm avec backend Node/Express/Prisma et frontend React/Redux/Vite.
 
 ## Structure
