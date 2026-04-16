@@ -47,3 +47,5 @@ Les deux images sont construites depuis la racine du monorepo afin d'accéder à
 docker build -f packages/backend/Dockerfile -t eventhub-backend .
 docker build -f packages/frontend/Dockerfile -t eventhub-frontend .
 ```
+
+---
