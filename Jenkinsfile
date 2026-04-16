@@ -22,6 +22,12 @@ pipeline {
             }
         }
 
+        stage('Prisma Generate') {
+            steps {
+                sh 'pnpm --filter @eventhub/backend exec prisma generate'
+            }
+        }
+        
         stage('Tests') {
             parallel {
                 stage('Backend Tests') {
@@ -36,6 +42,8 @@ pipeline {
                 }
             }
         }
+
+
 
         stage('Build Backend') {
             steps {
