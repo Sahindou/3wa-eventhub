@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// pour l'instant on met des simple string en attendant de completer plus tard
+
+model Event {
+  id            String      @id @default(uuid())  
+  title         String
+  description   String
+  startDate     DateTime
+  endDate       DateTime
+  venueId       String
+  capacity      Int
+  price         Float
+  organizerId   String
+  categoryId    String
+  imageUrl      String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  organizer     Organizer   @relation(fields: [organizerId], references: [id])
+}
+
+model User {
+  id            String      @id @default(uuid())
+  email         String      @unique 
+  password      String
+  first_name    String
+  last_name     String
+  phone         String
+  role          String
+  profile_image String?
+  is_verified   Boolean     @default(false)
+  otp_secret    String
+  otp_enable    Int         @default(0)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // Relation inverse (ex: un User peut avoir un Organizer)
+  organizer     Organizer?
+  a2f_backup_codes A2f_backup_codes?
+}
+
+model A2f_backup_codes {
+  id            String      @id @default(uuid())
+  user_id       String      @unique
+  recovery_code String[]    // à hasher avant insertion
+  nb_code_used  Int         @default(0)
+  nb_consecutive_tests Int  @default(0)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  user  User  @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+
+model Organizer {
+  id            String      @id @default(uuid()) 
+  user_id       String      @unique 
+  company_name  String
+  siret         String
+  description   String
+  is_verified   Boolean     @default(false)
+  rating        Float       @default(0.0)
+  createdAt     DateTime    @default(now())
+
+  // Relation vers User
+  user          User        @relation(fields: [user_id], references: [id])
+  
+  // Relation inverse
+  events        Event[]
+}

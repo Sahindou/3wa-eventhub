@@ -1,0 +1,90 @@
+tags:
+  - name: Organizers
+    description: Gestion des organisateurs
+
+paths:
+  /organizers/register:
+    post:
+      tags:
+        - Organizers
+      summary: Inscription d'un organisateur
+      description: Crée un compte utilisateur avec le rôle organisateur et un profil organisateur associé
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterOrganizerRequest'
+      responses:
+        '201':
+          description: Organisateur créé avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      userId:
+                        type: string
+                        format: uuid
+                      organizerId:
+                        type: string
+                        format: uuid
+        '400':
+          description: Données invalides
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Email déjà utilisé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                success: false
+                message: "Email already in use"
+
+  /organizers/login:
+    post:
+      tags:
+        - Organizers
+      summary: Connexion d'un organisateur
+      description: Authentifie un organisateur et retourne un token JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Connexion réussie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Email ou mot de passe incorrect
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                success: false
+                message: "Invalid email or password"
+        '403':
+          description: Accès refusé (pas un organisateur)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                success: false
+                message: "Access denied: not an organizer"

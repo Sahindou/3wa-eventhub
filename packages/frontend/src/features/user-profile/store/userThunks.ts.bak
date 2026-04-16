@@ -1,0 +1,22 @@
+
+import type { AppDispatch, AppGetState } from '../../../modules/store/store';
+import { fetchProfileSuccess, type UserProfile } from './userSlice';
+
+
+// Thunk pour synchroniser le profil après login
+export const syncProfileFromAuth = () => {
+  return (dispatch: AppDispatch, getState: AppGetState) => {
+    const { auth } = getState();
+    
+    if (auth.user) {
+      // Convertir l'user d'auth en profil complet
+      const profile: UserProfile = {
+        id: auth.user.id,
+        username: auth.user.username,
+        email: auth.user.email,
+      };
+      
+      dispatch(fetchProfileSuccess(profile));
+    }
+  };
+};
