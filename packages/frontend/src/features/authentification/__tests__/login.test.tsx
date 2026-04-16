@@ -3,6 +3,7 @@ import { screen, render, fireEvent, waitFor } from '@testing-library/react'
 import { LoginPage } from '../ui/pages/LoginPage'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import { createTestStore } from '../../../modules/testing/tests-environment'
 import type { AppStore } from '../../../modules/store/store'
 import type { AuthApi } from '../../../modules/api/authApi'
@@ -25,7 +26,9 @@ describe('Login page', () => {
   const setup = () => {
     return render(
       <Provider store={store}>
-        <LoginPage />
+        <MemoryRouter>
+          <LoginPage />
+        </MemoryRouter>
       </Provider>,
     )
   }
@@ -92,19 +95,22 @@ describe('Login page', () => {
   })
 
   it('should dispatch loginUser action on form submit', async () => {
-    // Mock de l'API qui retourne un utilisateur
+    // Mock de l'API qui retourne un utilisateur (format Axios : data.data.user)
     mockAuthApi.login.mockResolvedValue({
-      token: 'fake-jwt-token',
-      user: {
-        id: '1',
-        username: 'TestUser',
-        email: 'test@eventhub.com',
+      data: {
+        user: {
+          id: '1',
+          username: 'TestUser',
+          email: 'test@eventhub.com',
+        },
       },
     })
 
     render(
       <Provider store={store}>
-        <LoginPage />
+        <MemoryRouter>
+          <LoginPage />
+        </MemoryRouter>
       </Provider>,
     )
 
@@ -154,7 +160,9 @@ describe('Login page', () => {
 
     render(
       <Provider store={store}>
-        <LoginPage />
+        <MemoryRouter>
+          <LoginPage />
+        </MemoryRouter>
       </Provider>,
     )
 

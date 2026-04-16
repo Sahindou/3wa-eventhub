@@ -3,6 +3,7 @@ import { screen, render, fireEvent, waitFor } from '@testing-library/react'
 import { RegisterPage } from '../ui/pages/RegisterPage'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import { createTestStore } from '../../../modules/testing/tests-environment'
 import type { AppStore } from '../../../modules/store/store'
 import type { AuthApi } from '../../../modules/api/authApi'
@@ -25,7 +26,9 @@ describe('Register page', () => {
   const setup = () => {
     return render(
       <Provider store={store}>
-        <RegisterPage />
+        <MemoryRouter>
+          <RegisterPage />
+        </MemoryRouter>
       </Provider>,
     )
   }
