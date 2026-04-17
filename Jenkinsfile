@@ -10,6 +10,7 @@ pipeline {
     }
 
     stages {
+        
         stage('Checkout') {
             steps {
                 checkout scm
@@ -86,8 +87,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh 'docker compose -f docker-compose.prod.yml pull'
-                sh 'docker compose -f docker-compose.prod.yml up -d'
+                sh 'docker compose -p eventhub -f docker-compose.prod.yml pull'
+                sh 'docker compose -p eventhub -f docker-compose.prod.yml up -d --remove-orphans'
             }
         }
     }
