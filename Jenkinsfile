@@ -10,6 +10,12 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Install pnpm') {
             steps {
                 sh 'npm install -g pnpm'
@@ -27,7 +33,7 @@ pipeline {
                 sh 'pnpm --filter @eventhub/backend exec prisma generate'
             }
         }
-        
+
         stage('Tests') {
             parallel {
                 stage('Backend Tests') {
@@ -43,11 +49,9 @@ pipeline {
             }
         }
 
-
-
-        stage('Build Backend') {
+        stage('Build') {
             steps {
-                sh 'pnpm --filter @eventhub/backend run build'
+                sh 'pnpm run build'
             }
         }
     }
