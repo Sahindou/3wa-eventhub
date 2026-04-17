@@ -68,6 +68,11 @@ pipeline {
                         sh 'docker build -f packages/frontend/Dockerfile -t abdallah714/eventhub-frontend:latest .'
                     }
                 }
+                stage('Build Nginx Image') {
+                    steps {
+                        sh 'docker build -f Dockerfile.nginx -t abdallah714/eventhub-nginx:latest .'
+                    }
+                }
             }
         }
 
@@ -81,6 +86,7 @@ pipeline {
                     sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                     sh 'docker push abdallah714/eventhub-backend:latest'
                     sh 'docker push abdallah714/eventhub-frontend:latest'
+                    sh 'docker push abdallah714/eventhub-nginx:latest'
                 }
             }
         }

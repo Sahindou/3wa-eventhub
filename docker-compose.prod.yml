@@ -55,13 +55,11 @@ services:
       - backend
 
   nginx:
-    image: nginx:alpine
+    image: abdallah714/eventhub-nginx:latest
     container_name: nginx
     restart: always
     ports:
       - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
       - postgres_default
     depends_on:
