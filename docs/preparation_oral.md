@@ -2,16 +2,19 @@
 
 ## Structure de la présentation (6.1)
 
-**Introduction (1 min)**
+**Introduction (1 min)**:
+
 > "Dans ce projet, j'ai mis en place une infrastructure CI/CD complète : Jenkins dans Docker pour le pipeline principal, GitHub Actions pour l'intégration continue légère, et un webhook pour automatiser les déclenchements."
 
-**Démonstration (3-4 min)**
+**Démonstration (3-4 min)**:
+
 1. Montrer Jenkins dans le navigateur → build vert
 2. Montrer la console output → stages visibles
 3. Montrer l'onglet Actions sur GitHub → workflow vert
 4. Expliquer le Jenkinsfile ouvert dans l'éditeur
 
-**Conclusion (30 sec)**
+**Conclusion (30 sec)**:
+
 > "Les deux outils sont complémentaires : GitHub Actions vérifie rapidement les tests à chaque push, Jenkins fait le pipeline complet avec les outils spécifiques au projet."
 
 ---
@@ -83,7 +86,7 @@
 
 ## Schéma à montrer à l'oral
 
-```
+```text
 git push
     │
     ├──► GitHub Actions (immédiat)
