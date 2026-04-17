@@ -54,6 +54,42 @@ pipeline {
                 sh 'pnpm run build'
             }
         }
+
+        stage('Docker Build') {
+            parallel {
+                stage('Build Backend Image') {
+                    steps {
+                        sh 'docker build -f packages/backend/Dockerfile -t abdallah714/eventhub-backend:latest .'
+                    }
+                }
+                stage('Build Frontend Image') {
+                    steps {
+                        sh 'docker build -f packages/frontend/Dockerfile -t abdallah714/eventhub-frontend:latest .'
+                    }
+                }
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                    sh 'docker push abdallah714/eventhub-backend:latest'
+                    sh 'docker push abdallah714/eventhub-frontend:latest'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'docker compose -f docker-compose.prod.yml pull'
+                sh 'docker compose -f docker-compose.prod.yml up -d'
+            }
+        }
     }
 
     post {
