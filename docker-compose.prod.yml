@@ -25,8 +25,18 @@ services:
       timeout: 5s
       retries: 5
 
+  migrate:
+    image: abdallah714/eventhub-backend:latest
+    container_name: migrate
+    restart: "no"
+    networks:
+      - postgres_default
+    environment:
+      DATABASE_URL: postgresql://ifrit:seigneurdestenebres@postgres:5432/db_eventhub
+    command: npx prisma migrate deploy
+
   backend:
-    image: abdallah714/eventhub-backend:latest      
+    image: abdallah714/eventhub-backend:latest
     container_name: backend
     restart: always
     networks:
@@ -44,6 +54,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
 
   frontend:
     image: abdallah714/eventhub-frontend:latest
